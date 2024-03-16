@@ -17,9 +17,10 @@ def get_graph(filename):
     # container = deque()
     # container.append(["function",0,0])
     # print(container)
-    box=[]# 存放关键字
+    box=[]# Schlüsselwörter speichern
     box.append(node("main",-1,-1))
-    next_type = 1 #1:正确条件下运行 0：错误条件下运行
+    next_type = 1   #1: Unter korrekten Bedingungen ausführen 
+                    #0: Unter falschen Bedingungen ausführen
 
     symbol=["{","}"]
     s_keywords=["else","if","while","for"]
@@ -74,8 +75,8 @@ def get_graph(filename):
 
     class graph_node:
         content=""
-        type=0# 0:container 1:矩形 2:菱形 3:圆角矩形 4:平行四边形 5:fork
-        linker=0 #container的连接
+        type=0# 0:container 1:Rechteck 2:Rhombus 3:Abgerundetes Rechteck 4:Parallelogramm 5:fork
+        linker=0 #containerVerbindung <= [De liánjiē]
         yes=-1
         no=-1
         last=-1
@@ -94,9 +95,9 @@ def get_graph(filename):
 
 
     graph=[]
-    if_stack=[]#保存if位置，用于给else
-    graph.append(graph_node("开始",3,0,-1,-1,-1))
-    graph.append(graph_node("结束",3,0,-1,-1,-1))
+    if_stack=[]#Speichern Sie die if-Position zum Weitergeben else
+    graph.append(graph_node("START",3,0,-1,-1,-1))
+    graph.append(graph_node("Beenden ",3,0,-1,-1,-1))
     def bfs(pos,before,after):
         print("bfs ",pos,before,after)
         queue = deque()
@@ -107,12 +108,12 @@ def get_graph(filename):
         i=from_
         while i!=to_:
             #print(if_stack)
-            if file_str[i][1] != 0:# 两个括号之间
+            if file_str[i][1] != 0:# zwischen zwei Klammern
                 line = file_str[i][0]
                 if line.find("else") != -1 and line.find("if")==-1:#else
                     bf=if_stack[-1]
                     nxt=graph[graph[bf].yes].yes
-                    pos = len(graph)  # pos pos+1 是新建的节点
+                    pos = len(graph)  # pos pos+1 ist ein neu erstellter Knoten
                     if_stack.pop()
                     queue.append(pos + 1)
                     graph[bf].no = pos
@@ -124,7 +125,7 @@ def get_graph(filename):
                     nxt = graph[graph[bf].yes].yes
                     str = line[line.find("//") + 2:line.rfind('\n')] if line.find("//") != -1 else line[line.find(
                         "(") + 1:line.rfind(')')]
-                    pos = len(graph)  # pos pos+1 是新建的节点
+                    pos = len(graph)  # pos pos+1 ist ein neu erstellter Knoten
                     if_stack.pop()
                     if_stack.append(pos)
                     queue.append(pos + 1)
@@ -135,7 +136,7 @@ def get_graph(filename):
                 if line.find("if")!=-1 and line.find("else")==-1:       # if
                     str = line[line.find("//") + 2:line.rfind('\n')] if line.find("//") != -1 else line[line.find(
                         "(") + 1:line.rfind(')')]
-                    pos = len(graph)  # pos pos+1 pos+2 是新建的节点
+                    pos = len(graph)  # pos pos+1 pos+2 ist ein neu erstellter Knoten
                     if_stack.append(pos)
                     queue.append(pos+1)
                     graph[bfe].yes = pos
@@ -148,7 +149,7 @@ def get_graph(filename):
                 if line.find("for")!=-1:
                     str=line[line.find("(") + 1:line.rfind(')')]
                     str=str.split(";")
-                    pos=len(graph)#pos pos+1 pos+2 pos+3是新建的四个节点
+                    pos=len(graph)#pos pos+1 pos+2 pos+3sind die vier neu erstellten Knoten
                     queue.append(pos + 2)
                     graph[bfe].yes = pos
                     graph[aftr].last = pos+4
@@ -163,7 +164,7 @@ def get_graph(filename):
                 if line.find("while")!=-1:
                     str = line[line.find("//") + 2:line.rfind('\n')] if line.find("//") != -1 else line[line.find(
                         "(") + 1:line.rfind(')')]
-                    pos = len(graph)  # pos pos+1 pos+2是新建的节点
+                    pos = len(graph)  # pos pos+1 pos+2ist ein neu erstellter Knoten
                     queue.append(pos + 1)
                     graph[bfe].yes = pos
                     graph[aftr].last = pos+2
@@ -171,14 +172,14 @@ def get_graph(filename):
                     graph.append(graph_node("container", 0, file_str[i][1], pos, -1, pos))
                     graph.append(graph_node("fork", 5, 0, aftr, -1, pos))
                     bfe = pos+2
-            elif file_str[i][0].find("//")!=-1:#一般有注释代码
+            elif file_str[i][0].find("//")!=-1:#Normalerweise kommentierter Code
 
                 line = file_str[i][0]
                 #print(line[line.find("//") + 2:line.rfind('\n')], aftr, bfe)
                 pos = len(graph)
-                graph.append(graph_node(line[line.find("//") + 2:line.rfind('\n')], 1, 0,aftr,-1,bfe))#建立节点
-                graph[bfe].yes=pos #将该节点连在前一个节点的yes上，表明顺序进行
-                bfe=pos #修改before
+                graph.append(graph_node(line[line.find("//") + 2:line.rfind('\n')], 1, 0,aftr,-1,bfe))#Knoten erstellen <= [Jiànlì jiédiǎn]
+                graph[bfe].yes=pos #Verbinden Sie diesen Knoten mit dem Ja des vorherigen Knotens, um die Reihenfolge anzuzeigen
+                bfe=pos #Überarbeiten <= [Xiūgǎi]before
 
             if file_str[i][1]!=0:
                 i=box[file_str[i][1]].end+1
@@ -186,7 +187,7 @@ def get_graph(filename):
                 i=i+1
         while len(queue)!=0:
             i=queue[0]
-            bfs(graph[i].linker,graph[i].last,graph[i].yes)# TODO 不应该用i-1
+            bfs(graph[i].linker,graph[i].last,graph[i].yes)#TODO Sollte i-1 nicht verwenden
             queue.popleft()
         return
 
@@ -194,16 +195,16 @@ def get_graph(filename):
 
     cnt = 0
     for item in graph:
-        if graph[item.no].type == 5:  # 处理第五类节点
+        if graph[item.no].type == 5:  #Verarbeitung des fünften Knotentyps
             item.no = graph[item.no].yes
-        if graph[item.yes].type == 5:  # 处理第五类节点
+        if graph[item.yes].type == 5:  # Verarbeitung des fünften Knotentyps
             item.yes = graph[item.yes].yes
         cnt = cnt + 1
     cnt = 0
     for item in graph:
-        if graph[item.no].type == 5:  # 处理第五类节点
+        if graph[item.no].type == 5:  # Verarbeitung des fünften Knotentyps
             item.no = graph[item.no].yes
-        if graph[item.yes].type == 5:  # 处理第五类节点
+        if graph[item.yes].type == 5:  # Verarbeitung des fünften Knotentyps
             item.yes = graph[item.yes].yes
         cnt = cnt + 1
 

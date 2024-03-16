@@ -37,11 +37,11 @@ for (pos,i) in v:
     print("STEP%-2d:  " % (i), end="")
     if G[pos].type == 2:
         if G[pos].yes != -1 and G[pos].no != -1:
-            print("判断%s 如果条件为真，跳转到STEP%d；否则，跳转到STEP%d" % (G[pos].content, vis[G[pos].yes], vis[G[pos].no]))
+            print("Beurteilung <= [Handan]%s Wenn die Bedingung wahr ist, springen Sie zu SCHRITT%d; Andernfalls springen Sie zu SCHRITT%d" % (G[pos].content, vis[G[pos].yes], vis[G[pos].no]))
         if G[pos].yes != -1 and G[pos].no == -1:
-            print("判断%s 如果条件为真，跳转到STEP%d" % (G[pos].content, vis[G[pos].yes]))
+            print("Beurteilung <= [Handan]%s Wenn die Bedingung wahr ist, springen Sie zu SCHRITT%d" % (G[pos].content, vis[G[pos].yes]))
         if G[pos].yes == -1 and G[pos].no != -1:
-            print("判断%s 如果条件为假，跳转到STEP%d" % (G[pos].content, vis[G[pos].no]))
+            print("Beurteilung <= [Handan]%s Wenn die Bedingung falsch ist, springen Sie zu SCHRITT%d" % (G[pos].content, vis[G[pos].no]))
     else:
         print(G[pos].content)
 '''

@@ -1,6 +1,6 @@
 # auto_flowchart
 auto flowchart in Visio 
-This is a project to simplify the process of drawing flowchart :D
+This is a project to simplify the process of drawing flowchart
 (Only Support C/C++ for now)
 
 
