@@ -91,12 +91,12 @@ def setDefaultShapeValues(vsoShape):
 # Get the stencil object
 def getStencilName(): # Name of Visio stencil containing shapes
 
-    FlowchartStencilName = "BASFLO_U.VSSX" # Basic Flow Chart
+    FlowchartStencilName = "BASFLO_U.vssx" # Basic Flow Chart
     docFlowStencil = ""
 
     for doc in visio.Documents:
         print ("Doc name = %s" % doc)
-        if doc.Name == FlowchartStencilName or doc.Name == "BASFLO_M.VSSX" :
+        if doc.Name == FlowchartStencilName or doc.Name == "BASFLO_M.vssx" :
 
             docFlowStencil = doc
 
@@ -104,16 +104,17 @@ def getStencilName(): # Name of Visio stencil containing shapes
     return docFlowStencil
 
 
-MasterProcessName = "Process"
-MasterDecisionName = "Decision"
-MasterStartEnd = "Start/End"
+MasterProcessName = "Prozess"
+MasterDecisionName = "Entscheidung"
+MasterStartEnd = "Start/Ende"
 
 docFlowStencil = getStencilName()
 
+
 # Get masters for Process and Decision:
-mstProcess = docFlowStencil.Masters.ItemU(MasterProcessName)
-mstDecision =  docFlowStencil.Masters.ItemU(MasterDecisionName)
-mstStartEnd = docFlowStencil.Masters.ItemU(MasterStartEnd)
+mstProcess = docFlowStencil.Masters(MasterProcessName)
+mstDecision =  docFlowStencil.Masters(MasterDecisionName)
+mstStartEnd = docFlowStencil.Masters(MasterStartEnd)
 x = 1
 y = 10
 

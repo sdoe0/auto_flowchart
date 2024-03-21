@@ -1,5 +1,4 @@
 from collections import deque
-import numpy as np
 import json
 
 
@@ -98,6 +97,7 @@ def get_graph(filename):
     if_stack=[]#Speichern Sie die if-Position zum Weitergeben else
     graph.append(graph_node("START",3,0,-1,-1,-1))
     graph.append(graph_node("Beenden ",3,0,-1,-1,-1))
+    
     def bfs(pos,before,after):
         print("bfs ",pos,before,after)
         queue = deque()
@@ -172,17 +172,18 @@ def get_graph(filename):
                     graph.append(graph_node("container", 0, file_str[i][1], pos, -1, pos))
                     graph.append(graph_node("fork", 5, 0, aftr, -1, pos))
                     bfe = pos+2
-            elif file_str[i][0].find("//")!=-1:#Normalerweise kommentierter Code
+            # elif file_str[i][0].find("//")!=-1:#Normalerweise kommentierter Code
 
-                line = file_str[i][0]
-                #print(line[line.find("//") + 2:line.rfind('\n')], aftr, bfe)
-                pos = len(graph)
-                graph.append(graph_node(line[line.find("//") + 2:line.rfind('\n')], 1, 0,aftr,-1,bfe))#Knoten erstellen <= [Jiànlì jiédiǎn]
-                graph[bfe].yes=pos #Verbinden Sie diesen Knoten mit dem Ja des vorherigen Knotens, um die Reihenfolge anzuzeigen
-                bfe=pos #Überarbeiten <= [Xiūgǎi]before
+            #     line = file_str[i][0]
+            #     #print(line[line.find("//") + 2:line.rfind('\n')], aftr, bfe)
+            #     pos = len(graph)
+            #     graph.append(graph_node(line[line.find("//") + 2:line.rfind('\n')], 1, 0,aftr,-1,bfe))#Knoten erstellen <= [Jiànlì jiédiǎn]
+            #     graph[bfe].yes=pos #Verbinden Sie diesen Knoten mit dem Ja des vorherigen Knotens, um die Reihenfolge anzuzeigen
+            #     bfe=pos #Überarbeiten <= [Xiūgǎi]before
 
             if file_str[i][1]!=0:
                 i=box[file_str[i][1]].end+1
+                break
             else:
                 i=i+1
         while len(queue)!=0:
